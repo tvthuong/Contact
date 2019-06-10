@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DanhBa.Views.EditPage"
+             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             Title="{Binding Title}"
+             IsBusy="{Binding IsBusy}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{translator:Translate btnSave}" Command="{Binding cmdSave}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            <TableView IsEnabled="{Binding IsNotBusy}" BackgroundColor="White" Intent="Settings">
+                <TableView.Root>
+                    <TableRoot>
+                        <TableSection Title="{translator:Translate tblAvatar}">
+                            <ViewCell>
+                                <Image HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        WidthRequest="64"
+                                        HeightRequest="64"
+                                        Source="{Binding Contact.PhotoUrl}">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding cmdImage}"
+                                                        NumberOfTapsRequired="1" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection Title="{translator:Translate tblName}">
+                            <EntryCell Label="{translator:Translate txtFirstName}"
+                                    Completed="EntryCell_Completed"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.FirstName}"/>
+                            <EntryCell Label="{translator:Translate txtLastName}"
+                                    Completed="EntryCell_Completed"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.LastName}"/>
+                        </TableSection>
+                        <TableSection Title="{translator:Translate tblEmployment}">
+                            <EntryCell Label="{translator:Translate txtCompany}"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.Company}"/>
+                            <EntryCell Label="{translator:Translate txtTitle}"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.JobTitle}"/>
+                        </TableSection>
+                        <TableSection Title="{translator:Translate tblContact}">
+                            <EntryCell Label="{translator:Translate txtPhone}"
+                                    Completed="EntryCell_Completed"
+                                    Keyboard="Telephone"
+                                    Text="{Binding Contact.Phone}"/>
+                            <EntryCell Label="{translator:Translate txtEmail}"
+                                    Keyboard="Email"
+                                    Text="{Binding Contact.Email}"/>
+                        </TableSection>
+                        <TableSection Title="{translator:Translate tblAddress}">
+                            <EntryCell Label="{translator:Translate txtStreet}"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.Street}"/>
+                            <EntryCell Label="{translator:Translate txtCity}"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.City}"/>
+                            <EntryCell Label="{translator:Translate txtState}"
+                                    Keyboard="Text"
+                                    Text="{Binding Contact.State}"/>
+                            <EntryCell Label="{translator:Translate txtZIP}"
+                                    Keyboard="Numeric"
+                                    Text="{Binding Contact.PostalCode}"/>
+                        </TableSection>
+                    </TableRoot>
+                </TableView.Root>
+            </TableView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

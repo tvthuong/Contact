@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="{Binding Title}"
+             IsBusy="{Binding IsBusy}"
+             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             x:Class="DanhBa.Views.SelectImagePage"
+             xmlns:local="clr-namespace:DanhBa">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:UrlConverter x:Key="converter"/>
+            <local:StringUrlConverter x:Key="converter2"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding cmdOk}" Text="OK"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{translator:Translate Connect_Message}" IsVisible="{Binding IsNotConnected}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"/>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Grid.Row="0" Grid.Column="0"/>
+            <Entry IsVisible="{Binding IsConnected}" IsEnabled="{Binding IsNotBusy}" Text="{Binding txtUrl, Converter={StaticResource converter2}}" Grid.Row="1" Grid.Column="0"/>
+            <WebView IsVisible="{Binding IsConnected}" IsEnabled="{Binding IsNotBusy}" Source="{Binding txtUrl, Mode=TwoWay, Converter={StaticResource converter}}" Grid.Row="2" Grid.Column="0"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DanhBa.Views.DetailPage"
+             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             Title="{Binding Title}"
+             IsBusy="{Binding IsBusy}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{translator:Translate btnEdit}" Command="{Binding cmdEdit}"/>
+        <ToolbarItem Text="{translator:Translate btnDelete}" Command="{Binding cmdDelete}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+                <StackLayout IsEnabled="{Binding IsNotBusy}" Orientation="Horizontal"
+                            Spacing="10">
+                    <AbsoluteLayout>
+                        <Image x:Name="ProfilePhoto"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            WidthRequest="90"
+                            HeightRequest="90"
+                            Source="{Binding Contact.PhotoUrl}" />
+                    </AbsoluteLayout>
+                    <StackLayout Spacing="10">
+                        <Label Text="{Binding Contact.FullName}" FontSize="Large" TextColor="Red"/>
+                        <ContentView>
+                            <StackLayout Spacing="0">
+                                <Label Text="{Binding Contact.Company}" />
+                                <Label Text="{Binding Contact.JobTitle}"
+                                    FontSize="Small"
+                                    TextColor="Silver" />
+                            </StackLayout>
+                        </ContentView>
+                        <ContentView IsEnabled="{Binding Contact.HasAddress}"
+                                    IsVisible="{Binding Contact.HasAddress}">
+                            <StackLayout Spacing="0">
+                                <Label Text="{Binding Contact.Street}"
+                                    FontSize="Micro"
+                                    LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Contact.City}"
+                                    FontSize="Micro"
+                                    LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Contact.StatePostal}"
+                                    FontSize="Micro"
+                                    LineBreakMode="TailTruncation" />
+                            </StackLayout>
+                        </ContentView>
+                        <ContentView IsEnabled="{Binding Contact.HasPhoneNumber}"
+                                    IsVisible="{Binding Contact.HasPhoneNumber}">
+                            <StackLayout Orientation="Horizontal"
+                                        Spacing="10">
+                                <Image Source="message.png"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    WidthRequest="20">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding cmdMessage}"
+                                                            NumberOfTapsRequired="1" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Label Text="{Binding Contact.Phone}"
+                                    FontSize="Small"
+                                    HeightRequest="20"
+                                    VerticalTextAlignment="Center"
+                                    LineBreakMode="TailTruncation" />
+                                <Image Source="phone.png"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    WidthRequest="20">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding cmdPhone}"
+                                                            NumberOfTapsRequired="1" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                        </ContentView>
+                        <ContentView IsEnabled="{Binding Contact.HasEmailAddress}"
+                                    IsVisible="{Binding Contact.HasEmailAddress}">
+                            <StackLayout Orientation="Horizontal"
+                                        Spacing="10">
+                                <Image Source="email.png"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    WidthRequest="20">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding cmdEmail}"
+                                                            NumberOfTapsRequired="1" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Label Text="{Binding Contact.Email}"
+                                    FontSize="Micro"
+                                    HeightRequest="20"
+                                    LineBreakMode="TailTruncation"
+                                    VerticalTextAlignment="Center" />
+                            </StackLayout>
+                        </ContentView>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DanhBa.Views.PeopleListPage"
+             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             Title="{Binding Title}"
+             IsBusy="{Binding IsBusy}"
+             x:Name="RootPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding cmdAdd}" Text="{translator:Translate btnAdd}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            <SearchBar Placeholder="{translator:Translate txtFilter}" TextChanged="SearchBar_TextChanged" Text="{Binding txtFilter}" SearchCommand="{Binding cmdSearch}"/>
+            <ListView IsGroupingEnabled="true" HasUnevenRows="True" IsEnabled="{Binding IsNotBusy}" ItemsSource="{Binding Contacts}" ItemTapped="ListView_ItemTapped" SelectionMode="None">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Heading}" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding PhotoUrl}" Aspect="AspectFit" HeightRequest="64" WidthRequest="64" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"/>
+                                <Label Text="{Binding FullName}" FontSize="Large" TextColor="DeepPink" Grid.Row="0" Grid.Column="1"/>
+                                <Label Text="{Binding Phone}" Grid.Row="1" Grid.Column="1"/>
+                            </Grid>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="{translator:Translate btnEdit}"  Command="{Binding BindingContext.cmdEdit, Source={x:Reference RootPage}}" CommandParameter="{Binding}"/>
+                                <MenuItem Text="{translator:Translate btnDelete}" Command="{Binding BindingContext.cmdDelete, Source={x:Reference RootPage}}" CommandParameter="{Binding}"/>
+                            </ViewCell.ContextActions>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
