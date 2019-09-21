@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DanhBa.Views.EditPage"
-             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             xmlns:stringResource="clr-namespace:DanhBa.Resource;assembly=DanhBa.Resource"
              Title="{Binding Title}"
              IsBusy="{Binding IsBusy}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{translator:Translate btnSave}" Command="{Binding cmdSave}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnSave}" Command="{Binding cmdSave}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
@@ -14,7 +14,7 @@
             <TableView IsEnabled="{Binding IsNotBusy}" BackgroundColor="White" Intent="Settings">
                 <TableView.Root>
                     <TableRoot>
-                        <TableSection Title="{translator:Translate tblAvatar}">
+                        <TableSection Title="{Static stringResource:UI.tblAvatar}">
                             <ViewCell>
                                 <Image HorizontalOptions="Center"
                                         VerticalOptions="Center"
@@ -28,44 +28,44 @@
                                 </Image>
                             </ViewCell>
                         </TableSection>
-                        <TableSection Title="{translator:Translate tblName}">
-                            <EntryCell Label="{translator:Translate txtFirstName}"
+                        <TableSection Title="{Static stringResource:UI.tblName}">
+                            <EntryCell Label="{Static stringResource:UI.txtFirstName}"
                                     Completed="EntryCell_Completed"
                                     Keyboard="Text"
                                     Text="{Binding Contact.FirstName}"/>
-                            <EntryCell Label="{translator:Translate txtLastName}"
+                            <EntryCell Label="{Static stringResource:UI.txtLastName}"
                                     Completed="EntryCell_Completed"
                                     Keyboard="Text"
                                     Text="{Binding Contact.LastName}"/>
                         </TableSection>
-                        <TableSection Title="{translator:Translate tblEmployment}">
-                            <EntryCell Label="{translator:Translate txtCompany}"
+                        <TableSection Title="{Static stringResource:UI.tblEmployment}">
+                            <EntryCell Label="{Static stringResource:UI.txtCompany}"
                                     Keyboard="Text"
                                     Text="{Binding Contact.Company}"/>
-                            <EntryCell Label="{translator:Translate txtTitle}"
+                            <EntryCell Label="{Static stringResource:UI.txtTitle}"
                                     Keyboard="Text"
                                     Text="{Binding Contact.JobTitle}"/>
                         </TableSection>
-                        <TableSection Title="{translator:Translate tblContact}">
-                            <EntryCell Label="{translator:Translate txtPhone}"
+                        <TableSection Title="{Static stringResource:UI.tblContact}">
+                            <EntryCell Label="{Static stringResource:UI.txtPhone}"
                                     Completed="EntryCell_Completed"
                                     Keyboard="Telephone"
                                     Text="{Binding Contact.Phone}"/>
-                            <EntryCell Label="{translator:Translate txtEmail}"
+                            <EntryCell Label="{Static stringResource:UI.txtEmail}"
                                     Keyboard="Email"
                                     Text="{Binding Contact.Email}"/>
                         </TableSection>
-                        <TableSection Title="{translator:Translate tblAddress}">
-                            <EntryCell Label="{translator:Translate txtStreet}"
+                        <TableSection Title="{Static stringResource:UI.tblAddress}">
+                            <EntryCell Label="{Static stringResource:UI.txtStreet}"
                                     Keyboard="Text"
                                     Text="{Binding Contact.Street}"/>
-                            <EntryCell Label="{translator:Translate txtCity}"
+                            <EntryCell Label="{Static stringResource:UI.txtCity}"
                                     Keyboard="Text"
                                     Text="{Binding Contact.City}"/>
-                            <EntryCell Label="{translator:Translate txtState}"
+                            <EntryCell Label="{Static stringResource:UI.txtState}"
                                     Keyboard="Text"
                                     Text="{Binding Contact.State}"/>
-                            <EntryCell Label="{translator:Translate txtZIP}"
+                            <EntryCell Label="{Static stringResource:UI.txtZIP}"
                                     Keyboard="Numeric"
                                     Text="{Binding Contact.PostalCode}"/>
                         </TableSection>

@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DanhBa.Views.DetailPage"
-             xmlns:translator="clr-namespace:DanhBa.Helpers"
+             xmlns:stringResource="clr-namespace:DanhBa.Resource;assembly=DanhBa.Resource"
              Title="{Binding Title}"
              IsBusy="{Binding IsBusy}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{translator:Translate btnEdit}" Command="{Binding cmdEdit}"/>
-        <ToolbarItem Text="{translator:Translate btnDelete}" Command="{Binding cmdDelete}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnEdit}" Command="{Binding cmdEdit}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnDelete}" Command="{Binding cmdDelete}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>

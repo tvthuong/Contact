@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+
 namespace DanhBa.Services
 {
-    public interface IDataService
+    public interface IDataService<T,U>
     {
-        IDatabaseService DatabaseService { get; set; }
-        ObservableCollection<object> Elements { get; set; }
-        Task<ObservableCollection<GroupObservableCollection>> GetAllElements();
-        Task<ObservableCollection<GroupObservableCollection>> FilterElements(string filter);
-        void AddNewElement(object obj);
-        void DeleteElement(object obj);
-        Task<object> GetElementById(string id);
-        void SaveElement(object obj);
+        IDatabaseService<T> DatabaseService { get; set; }
+        ObservableCollection<T> Elements { get; set; }
+        Task<ObservableCollection<U>> GetAllElements();
+        Task<ObservableCollection<U>> FilterElements(string filter);
+        void AddNewElement(T obj);
+        void DeleteElement(T obj);
+        Task<T> GetElementById(string id);
+        void SaveElement(T obj);
     }
 }
