@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using DanhBa.Models;
+using DanhBa.Resource;
 using DanhBa.Services;
 using Prism.Commands;
 using Prism.Navigation;
@@ -9,7 +11,7 @@ namespace DanhBa.ViewModels
 {
     class DetailPageViewModel : ViewModelBase
     {
-        private IDataService _dataService;
+        private IDataService<Contact, IGrouping<string, Contact>> _dataService;
         private Contact _contact;
         public override bool IsBusy
         {
@@ -31,7 +33,7 @@ namespace DanhBa.ViewModels
             get => _contact;
             set => SetProperty(ref _contact, value);
         }
-        public DetailPageViewModel(INavigationService navigationService, IDataService dataService) : base(navigationService)
+        public DetailPageViewModel(INavigationService navigationService, IDataService<Contact, IGrouping<string, Contact>> dataService) : base(navigationService)
         {
             _dataService = dataService;
             Contact = new Contact();
@@ -40,7 +42,7 @@ namespace DanhBa.ViewModels
             cmdEmail = new DelegateCommand(Email);
             cmdDelete = new DelegateCommand(Delete, CanExecute);
             cmdEdit = new DelegateCommand(Edit, CanExecute);
-            Title = new Helpers.TranslateExtension() { Text = "DetailPage_Title" }.ProvideValue(null).ToString();
+            Title = UI.DetailPage_Title;
         }
         private bool CanExecute()
         {
@@ -55,17 +57,13 @@ namespace DanhBa.ViewModels
         private async void Delete()
         {
             IsBusy = true;
-            Helpers.TranslateExtension translate = new Helpers.TranslateExtension();
-            translate.Text = "Alert_Message_Delete";
-            string message = translate.ProvideValue(null).ToString();
-            translate.Text = "btnAccept_Delete";
-            string accept = translate.ProvideValue(null).ToString();
-            translate.Text = "btnDecline_Delete";
-            string decline = translate.ProvideValue(null).ToString();
+            string message = UI.Alert_Message_Delete;
+            string accept = UI.btnAccept_Delete;
+            string decline = UI.btnDecline_Delete;
             if (await Application.Current.MainPage.DisplayAlert("", message, accept, decline))
             {
                 _dataService.DeleteElement(Contact);
-                DependencyService.Get<IToastMessage>().LongTime(new Helpers.TranslateExtension() { Text = "ToastDelete" }.ProvideValue(null).ToString());
+                DependencyService.Get<IToastMessage>().LongTime(UI.ToastDelete);
                 await NavigationService.GoBackAsync();
             }
             else

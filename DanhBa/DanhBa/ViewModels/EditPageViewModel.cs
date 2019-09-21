@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using DanhBa.Models;
+using DanhBa.Resource;
 using DanhBa.Services;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
@@ -12,7 +14,7 @@ namespace DanhBa.ViewModels
 {
     class EditPageViewModel : ViewModelBase
     {
-        private IDataService _dataService;
+        private IDataService<Contact, IGrouping<string, Contact>> _dataService;
         private Contact contact;
         public override bool IsBusy
         {
@@ -30,7 +32,7 @@ namespace DanhBa.ViewModels
             get => contact;
             set => SetProperty(ref contact, value);
         }
-        public EditPageViewModel(INavigationService navigationService, IDataService dataservice) : base(navigationService)
+        public EditPageViewModel(INavigationService navigationService, IDataService<Contact, IGrouping<string, Contact>> dataservice) : base(navigationService)
         {
             _dataService = dataservice;
             Contact = new Contact();
@@ -40,15 +42,10 @@ namespace DanhBa.ViewModels
         private async void SelectImage()
         {
             IsBusy = true;
-            Helpers.TranslateExtension translate = new Helpers.TranslateExtension();
-            translate.Text = "Alert_Title_Select_Image";
-            string title = translate.ProvideValue(null).ToString();
-            translate.Text = "btnDecline";
-            string decline = translate.ProvideValue(null).ToString();
-            translate.Text = "btnFromWeb";
-            string fromweb = translate.ProvideValue(null).ToString();
-            translate.Text = "btnFromdevice";
-            string fromdevice = translate.ProvideValue(null).ToString();
+            string title = UI.Alert_Title_Select_Image;
+            string decline = UI.btnDecline;
+            string fromweb = UI.btnFromWeb;
+            string fromdevice = UI.btnFromdevice;
             string result = await Application.Current.MainPage.DisplayActionSheet(title, decline, null, fromweb, fromdevice);
             if (result == fromweb)
             {
@@ -66,15 +63,10 @@ namespace DanhBa.ViewModels
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
             if (status != PermissionStatus.Granted)
             {
-                Helpers.TranslateExtension translate = new Helpers.TranslateExtension();
-                translate.Text = "Alert_Title";
-                string title = translate.ProvideValue(null).ToString();
-                translate.Text = "Alert_Message";
-                string message = translate.ProvideValue(null).ToString();
-                translate.Text = "btnAccept";
-                string accept = translate.ProvideValue(null).ToString();
-                translate.Text = "btnDecline";
-                string decline = translate.ProvideValue(null).ToString();
+                string title = UI.Alert_Title;
+                string message = UI.Alert_Message;
+                string accept = UI.btnAccept;
+                string decline = UI.btnDecline;
                 if (await Application.Current.MainPage.DisplayAlert(title, message, accept, decline))
                     DependencyService.Get<ISettings>().OpenManageApplicationsSettings();
                 IsBusy = false;
@@ -115,12 +107,12 @@ namespace DanhBa.ViewModels
             IsBusy = true;
             if (parameters.ContainsKey("Id"))
             {
-                Title = new Helpers.TranslateExtension() { Text = "EditPage_Edit_Title" }.ProvideValue(null).ToString();
+                Title = UI.EditPage_Edit_Title;
                 Contact temp = (Contact)await _dataService.GetElementById(parameters["Id"].ToString());
                 Contact = (Contact)temp.Clone();
             }
             else
-                Title = new Helpers.TranslateExtension() { Text = "EditPage_Add_Title" }.ProvideValue(null).ToString();
+                Title = UI.EditPage_Add_Title;
             if (parameters.ContainsKey("PhotoUrl"))
                 Contact.PhotoUrl = parameters["PhotoUrl"].ToString();
             IsBusy = false;

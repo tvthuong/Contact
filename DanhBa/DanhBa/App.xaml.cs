@@ -1,9 +1,11 @@
-﻿using DanhBa.Services;
+﻿using DanhBa.Models;
+using DanhBa.Services;
 using DanhBa.Views;
 using Prism;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,7 +22,7 @@ namespace DanhBa
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton(typeof(IDataService), typeof(ContactDataService));
+            containerRegistry.RegisterSingleton(typeof(IDataService<Contact, IGrouping<string, Contact>>), typeof(ContactDataService));
             containerRegistry.RegisterForNavigation<NavigationPage>("Navigation");
             containerRegistry.RegisterForNavigation<PeopleListPage>("PeopleList");
             containerRegistry.RegisterForNavigation<DetailPage>("Detail");

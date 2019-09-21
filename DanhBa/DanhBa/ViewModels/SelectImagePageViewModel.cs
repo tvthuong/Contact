@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Windows.Input;
+using DanhBa.Resource;
 using Plugin.Connectivity;
 using Prism.Commands;
 using Prism.Navigation;
@@ -46,7 +47,7 @@ namespace DanhBa.ViewModels
         public ICommand cmdOk { get; set; }
         public SelectImagePageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            Title = new Helpers.TranslateExtension() { Text = "SelectImagePage_Title" }.ProvideValue(null).ToString();
+            Title = UI.SelectImagePage_Title;
             cmdOk = new DelegateCommand(Ok, CanExecute);
             IsValidUrl = false;
             txtUrl = @"https://www.google.com/";
@@ -89,7 +90,7 @@ namespace DanhBa.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("", new Helpers.TranslateExtension() { Text = "SelectImage_Error_Message" }.ProvideValue(null).ToString(), "Ok");
+                await Application.Current.MainPage.DisplayAlert("", UI.SelectImage_Error_Message, UI.Confirm_Button);
                 IsBusy = false;
             }
         }

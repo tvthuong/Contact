@@ -5,13 +5,15 @@ using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using DanhBa.Resource;
+using System.Linq;
 
 namespace DanhBa.ViewModels
 {
     public class PeopleListPageViewModel : ViewModelBase
     {
-        private IDataService _dataService;
-        private ObservableCollection<GroupObservableCollection> _contacts;
+        private IDataService<Contact, IGrouping<string, Contact>> _dataService;
+        private ObservableCollection<IGrouping<string, Contact>> _contacts;
         private string _txtFilter;
         public override bool IsBusy
         {
@@ -32,12 +34,12 @@ namespace DanhBa.ViewModels
         public ICommand cmdDelete { get; set; }
         public ICommand cmdEdit { get; set; }
         public ICommand cmdView { get; set; }
-        public ObservableCollection<GroupObservableCollection> Contacts
+        public ObservableCollection<IGrouping<string, Contact>> Contacts
         {
             get => _contacts;
             set => SetProperty(ref _contacts, value);
         }
-        public PeopleListPageViewModel(INavigationService navigationService, IDataService dataservice) : base(navigationService)
+        public PeopleListPageViewModel(INavigationService navigationService, IDataService<Contact, IGrouping<string, Contact>> dataservice) : base(navigationService)
         {
             _dataService = dataservice;
             cmdAdd = new DelegateCommand(Add, CanExecute);
@@ -45,9 +47,9 @@ namespace DanhBa.ViewModels
             cmdEdit = new DelegateCommand<Contact>(Edit);
             cmdView = new DelegateCommand<Contact>(View);
             cmdSearch = new DelegateCommand(Search);
-            Contacts = new ObservableCollection<GroupObservableCollection>();
+            Contacts = new ObservableCollection<IGrouping<string, Contact>>();
             txtFilter = "";
-            Title = new Helpers.TranslateExtension() { Text = "PeopleListPage_Title" }.ProvideValue(null).ToString();
+            Title = UI.PeopleListPage_Title;
         }
         private async void Search()
         {
@@ -77,17 +79,13 @@ namespace DanhBa.ViewModels
         private async void Delete(Contact obj)
         {
             IsBusy = true;
-            Helpers.TranslateExtension translate = new Helpers.TranslateExtension();
-            translate.Text = "Alert_Message_Delete";
-            string message = translate.ProvideValue(null).ToString();
-            translate.Text = "btnAccept_Delete";
-            string accept = translate.ProvideValue(null).ToString();
-            translate.Text = "btnDecline_Delete";
-            string decline = translate.ProvideValue(null).ToString();
+            string message = UI.Alert_Message_Delete;
+            string accept = UI.btnAccept_Delete;
+            string decline = UI.btnDecline_Delete;
             if (await Application.Current.MainPage.DisplayAlert("", message, accept, decline))
             {
                 _dataService.DeleteElement(obj);
-                DependencyService.Get<IToastMessage>().LongTime(new Helpers.TranslateExtension() { Text = "ToastDelete" }.ProvideValue(null).ToString());
+                DependencyService.Get<IToastMessage>().LongTime(UI.ToastDelete);
                 Search();
             }
             else
