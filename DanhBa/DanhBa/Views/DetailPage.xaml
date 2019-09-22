@@ -6,8 +6,8 @@
              Title="{Binding Title}"
              IsBusy="{Binding IsBusy}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Static stringResource:UI.btnEdit}" Command="{Binding cmdEdit}"/>
-        <ToolbarItem Text="{Static stringResource:UI.btnDelete}" Command="{Binding cmdDelete}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnEdit}" Command="{Binding EditContactCommand}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnDelete}" Command="{Binding DeleteContactCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
@@ -21,34 +21,34 @@
                             VerticalOptions="Center"
                             WidthRequest="90"
                             HeightRequest="90"
-                            Source="{Binding Contact.PhotoUrl}" />
+                            Source="{Binding PhotoUrl}" />
                     </AbsoluteLayout>
                     <StackLayout Spacing="10">
-                        <Label Text="{Binding Contact.FullName}" FontSize="Large" TextColor="Red"/>
+                        <Label Text="{Binding FullName}" FontSize="Large" TextColor="Red"/>
                         <ContentView>
                             <StackLayout Spacing="0">
-                                <Label Text="{Binding Contact.Company}" />
-                                <Label Text="{Binding Contact.JobTitle}"
+                                <Label Text="{Binding Company}" />
+                                <Label Text="{Binding JobTitle}"
                                     FontSize="Small"
                                     TextColor="Silver" />
                             </StackLayout>
                         </ContentView>
-                        <ContentView IsEnabled="{Binding Contact.HasAddress}"
-                                    IsVisible="{Binding Contact.HasAddress}">
+                        <ContentView IsEnabled="{Binding HasAddress}"
+                                    IsVisible="{Binding HasAddress}">
                             <StackLayout Spacing="0">
-                                <Label Text="{Binding Contact.Street}"
+                                <Label Text="{Binding Street}"
                                     FontSize="Micro"
                                     LineBreakMode="TailTruncation" />
-                                <Label Text="{Binding Contact.City}"
+                                <Label Text="{Binding City}"
                                     FontSize="Micro"
                                     LineBreakMode="TailTruncation" />
-                                <Label Text="{Binding Contact.StatePostal}"
+                                <Label Text="{Binding StatePostal}"
                                     FontSize="Micro"
                                     LineBreakMode="TailTruncation" />
                             </StackLayout>
                         </ContentView>
-                        <ContentView IsEnabled="{Binding Contact.HasPhoneNumber}"
-                                    IsVisible="{Binding Contact.HasPhoneNumber}">
+                        <ContentView IsEnabled="{Binding HasPhoneNumber}"
+                                    IsVisible="{Binding HasPhoneNumber}">
                             <StackLayout Orientation="Horizontal"
                                         Spacing="10">
                                 <Image Source="message.png"
@@ -56,11 +56,11 @@
                                     HeightRequest="20"
                                     WidthRequest="20">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding cmdMessage}"
+                                        <TapGestureRecognizer Command="{Binding MessageCommand}"
                                                             NumberOfTapsRequired="1" />
                                     </Image.GestureRecognizers>
                                 </Image>
-                                <Label Text="{Binding Contact.Phone}"
+                                <Label Text="{Binding Phone}"
                                     FontSize="Small"
                                     HeightRequest="20"
                                     VerticalTextAlignment="Center"
@@ -70,14 +70,14 @@
                                     HeightRequest="20"
                                     WidthRequest="20">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding cmdPhone}"
+                                        <TapGestureRecognizer Command="{Binding PhoneCommand}"
                                                             NumberOfTapsRequired="1" />
                                     </Image.GestureRecognizers>
                                 </Image>
                             </StackLayout>
                         </ContentView>
-                        <ContentView IsEnabled="{Binding Contact.HasEmailAddress}"
-                                    IsVisible="{Binding Contact.HasEmailAddress}">
+                        <ContentView IsEnabled="{Binding HasEmailAddress}"
+                                    IsVisible="{Binding HasEmailAddress}">
                             <StackLayout Orientation="Horizontal"
                                         Spacing="10">
                                 <Image Source="email.png"
@@ -85,11 +85,11 @@
                                     HeightRequest="20"
                                     WidthRequest="20">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding cmdEmail}"
+                                        <TapGestureRecognizer Command="{Binding SendEmailCommand}"
                                                             NumberOfTapsRequired="1" />
                                     </Image.GestureRecognizers>
                                 </Image>
-                                <Label Text="{Binding Contact.Email}"
+                                <Label Text="{Binding Email}"
                                     FontSize="Micro"
                                     HeightRequest="20"
                                     LineBreakMode="TailTruncation"

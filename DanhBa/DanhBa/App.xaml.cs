@@ -1,11 +1,8 @@
-﻿using DanhBa.Models;
-using DanhBa.Services;
+﻿using DanhBa.Business;
 using DanhBa.Views;
-using Prism;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
-using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,14 +12,16 @@ namespace DanhBa
     public partial class App : PrismApplication
     {
         public App() : base(null) { }
+
         protected override void OnInitialized()
         {
             InitializeComponent();
+            ContactBD.Instance.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
             NavigationService.NavigateAsync("Navigation/PeopleList");
         }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton(typeof(IDataService<Contact, IGrouping<string, Contact>>), typeof(ContactDataService));
             containerRegistry.RegisterForNavigation<NavigationPage>("Navigation");
             containerRegistry.RegisterForNavigation<PeopleListPage>("PeopleList");
             containerRegistry.RegisterForNavigation<DetailPage>("Detail");

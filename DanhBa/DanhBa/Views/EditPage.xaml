@@ -6,7 +6,7 @@
              Title="{Binding Title}"
              IsBusy="{Binding IsBusy}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Static stringResource:UI.btnSave}" Command="{Binding cmdSave}"/>
+        <ToolbarItem Text="{Static stringResource:UI.btnSave}" Command="{Binding SaveContactCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
@@ -20,9 +20,9 @@
                                         VerticalOptions="Center"
                                         WidthRequest="64"
                                         HeightRequest="64"
-                                        Source="{Binding Contact.PhotoUrl}">
+                                        Source="{Binding PhotoUrl}">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding cmdImage}"
+                                        <TapGestureRecognizer Command="{Binding SelectContactImageCommand}"
                                                         NumberOfTapsRequired="1" />
                                     </Image.GestureRecognizers>
                                 </Image>
@@ -30,44 +30,41 @@
                         </TableSection>
                         <TableSection Title="{Static stringResource:UI.tblName}">
                             <EntryCell Label="{Static stringResource:UI.txtFirstName}"
-                                    Completed="EntryCell_Completed"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.FirstName}"/>
+                                    Text="{Binding FirstName}"/>
                             <EntryCell Label="{Static stringResource:UI.txtLastName}"
-                                    Completed="EntryCell_Completed"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.LastName}"/>
+                                    Text="{Binding LastName}"/>
                         </TableSection>
                         <TableSection Title="{Static stringResource:UI.tblEmployment}">
                             <EntryCell Label="{Static stringResource:UI.txtCompany}"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.Company}"/>
+                                    Text="{Binding Company}"/>
                             <EntryCell Label="{Static stringResource:UI.txtTitle}"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.JobTitle}"/>
+                                    Text="{Binding JobTitle}"/>
                         </TableSection>
                         <TableSection Title="{Static stringResource:UI.tblContact}">
                             <EntryCell Label="{Static stringResource:UI.txtPhone}"
-                                    Completed="EntryCell_Completed"
                                     Keyboard="Telephone"
-                                    Text="{Binding Contact.Phone}"/>
+                                    Text="{Binding Phone}"/>
                             <EntryCell Label="{Static stringResource:UI.txtEmail}"
                                     Keyboard="Email"
-                                    Text="{Binding Contact.Email}"/>
+                                    Text="{Binding Email}"/>
                         </TableSection>
                         <TableSection Title="{Static stringResource:UI.tblAddress}">
                             <EntryCell Label="{Static stringResource:UI.txtStreet}"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.Street}"/>
+                                    Text="{Binding Street}"/>
                             <EntryCell Label="{Static stringResource:UI.txtCity}"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.City}"/>
+                                    Text="{Binding City}"/>
                             <EntryCell Label="{Static stringResource:UI.txtState}"
                                     Keyboard="Text"
-                                    Text="{Binding Contact.State}"/>
+                                    Text="{Binding State}"/>
                             <EntryCell Label="{Static stringResource:UI.txtZIP}"
                                     Keyboard="Numeric"
-                                    Text="{Binding Contact.PostalCode}"/>
+                                    Text="{Binding PostalCode}"/>
                         </TableSection>
                     </TableRoot>
                 </TableView.Root>

@@ -1,6 +1,4 @@
-﻿using DanhBa.ViewModels;
-using Prism.Commands;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 namespace DanhBa.Views
 {
@@ -11,9 +9,5 @@ namespace DanhBa.Views
 		{
 			InitializeComponent ();
 		}
-        private void EntryCell_Completed(object sender, System.EventArgs e)
-        {
-            ((DelegateCommand)((EditPageViewModel)BindingContext).cmdSave).RaiseCanExecuteChanged();
-        }
     }
 }

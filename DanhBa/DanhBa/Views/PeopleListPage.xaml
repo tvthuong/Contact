@@ -3,17 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DanhBa.Views.PeopleListPage"
              xmlns:stringResource="clr-namespace:DanhBa.Resource;assembly=DanhBa.Resource"
+             xmlns:behavior="http://prismlibrary.com"
+             xmlns:converters="clr-namespace:DanhBa.Converters"
              Title="{Binding Title}"
              IsBusy="{Binding IsBusy}"
              x:Name="RootPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ItemTappedToCommandConverter x:Key="ItemTappedToCommandConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding cmdAdd}" Text="{Static stringResource:UI.btnAdd}"/>
+        <ToolbarItem Command="{Binding AddContactCommand}" Text="{Static stringResource:UI.btnAdd}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
-            <SearchBar Placeholder="{Static stringResource:UI.txtFilter}" TextChanged="SearchBar_TextChanged" Text="{Binding txtFilter}" SearchCommand="{Binding cmdSearch}"/>
-            <ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}" HasUnevenRows="True" IsEnabled="{Binding IsNotBusy}" ItemsSource="{Binding Contacts}" ItemTapped="ListView_ItemTapped" SelectionMode="None">
+            <SearchBar Placeholder="{Static stringResource:UI.txtFilter}" Text="{Binding SearchText}"/>
+            <ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}" HasUnevenRows="True" IsEnabled="{Binding IsNotBusy}" ItemsSource="{Binding Contacts}" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -31,12 +38,15 @@
                                 <Label Text="{Binding Phone}" Grid.Row="1" Grid.Column="1"/>
                             </Grid>
                             <ViewCell.ContextActions>
-                                <MenuItem Text="{Static stringResource:UI.btnEdit}"  Command="{Binding BindingContext.cmdEdit, Source={x:Reference RootPage}}" CommandParameter="{Binding}"/>
-                                <MenuItem Text="{Static stringResource:UI.btnDelete}" Command="{Binding BindingContext.cmdDelete, Source={x:Reference RootPage}}" CommandParameter="{Binding}"/>
+                                <MenuItem Text="{Static stringResource:UI.btnEdit}"  Command="{Binding BindingContext.EditContactCommand, Source={x:Reference RootPage}}" CommandParameter="{Binding .}"/>
+                                <MenuItem Text="{Static stringResource:UI.btnDelete}" Command="{Binding BindingContext.DeleteContactCommand, Source={x:Reference RootPage}}" CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <behavior:EventToCommandBehavior EventName="ItemTapped" Command="{Binding ViewDetailContactCommand}" EventArgsConverter="{StaticResource ItemTappedToCommandConverter}"/>
+                </ListView.Behaviors>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

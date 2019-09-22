@@ -1,82 +1,105 @@
 ﻿using System.Windows.Input;
 using DanhBa.Models;
-using DanhBa.Services;
 using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using DanhBa.Resource;
 using System.Linq;
+using System.Collections.Generic;
+using DanhBa.Business;
+using DanhBa.Business.Models;
 
 namespace DanhBa.ViewModels
 {
     public class PeopleListPageViewModel : ViewModelBase
     {
-        private IDataService<Contact, IGrouping<string, Contact>> _dataService;
-        private ObservableCollection<IGrouping<string, Contact>> _contacts;
-        private string _txtFilter;
         public override bool IsBusy
         {
             get => base.IsBusy;
             set
             {
                 base.IsBusy = value;
-                ((DelegateCommand)cmdAdd).RaiseCanExecuteChanged();
+                ((DelegateCommand)AddContactCommand).RaiseCanExecuteChanged();
             }
         }
-        public string txtFilter
+        public string SearchText
         {
-            get => _txtFilter;
-            set => SetProperty(ref _txtFilter, value);
+            get => _searchText;
+            set => SetProperty(ref _searchText, value, () => RaisePropertyChanged(nameof(Contacts)));
         }
-        public ICommand cmdSearch { get; set; }
-        public ICommand cmdAdd { get; set; }
-        public ICommand cmdDelete { get; set; }
-        public ICommand cmdEdit { get; set; }
-        public ICommand cmdView { get; set; }
         public ObservableCollection<IGrouping<string, Contact>> Contacts
         {
-            get => _contacts;
-            set => SetProperty(ref _contacts, value);
+            get
+            {
+                var result = ContactItemModels?.Where(item =>
+                string.IsNullOrEmpty(SearchText?.Trim())
+                || item.FullName.ToLower().Contains(SearchText.ToLower())
+                || item.Phone.Contains(SearchText)).GroupBy(item => item.ShortName);
+                if(result != null)
+                    return new ObservableCollection<IGrouping<string, Contact>>(result);
+                return null;
+            }
         }
-        public PeopleListPageViewModel(INavigationService navigationService, IDataService<Contact, IGrouping<string, Contact>> dataservice) : base(navigationService)
+        public ICommand AddContactCommand { get; set; }
+        public ICommand DeleteContactCommand { get; set; }
+        public ICommand EditContactCommand { get; set; }
+        public ICommand ViewDetailContactCommand { get; set; }
+
+        protected IEnumerable<Contact> ContactItemModels
         {
-            _dataService = dataservice;
-            cmdAdd = new DelegateCommand(Add, CanExecute);
-            cmdDelete = new DelegateCommand<Contact>(Delete);
-            cmdEdit = new DelegateCommand<Contact>(Edit);
-            cmdView = new DelegateCommand<Contact>(View);
-            cmdSearch = new DelegateCommand(Search);
-            Contacts = new ObservableCollection<IGrouping<string, Contact>>();
-            txtFilter = "";
+            set => SetProperty(ref _contactItemModels, value, () => { RaisePropertyChanged(nameof(Contacts)); });
+            get => _contactItemModels;
+        }
+
+        private IEnumerable<Contact> _contactItemModels;
+        private string _searchText;
+
+        public PeopleListPageViewModel(INavigationService navigationService) : base(navigationService)
+        {
+            InitializeCommand();
             Title = UI.PeopleListPage_Title;
         }
-        private async void Search()
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            IsBusy = true;
-            if (!string.IsNullOrEmpty(txtFilter))
-                Contacts = await _dataService.FilterElements(txtFilter);
-            else
-                Contacts = await _dataService.GetAllElements();
+            base.OnNavigatedTo(parameters);
+            ContactItemModels = ContactBD.Instance.Contacts.Select(item => new Contact(item));
             IsBusy = false;
         }
-        private bool CanExecute()
+
+        private void InitializeCommand()
+        {
+            AddContactCommand = new DelegateCommand(HandleAddContactCommand, CanExecuteAddContactCommand);
+            DeleteContactCommand = new DelegateCommand<Contact>(HandleDeleteContactCommand);
+            EditContactCommand = new DelegateCommand<Contact>(HandleEditContactCommand);
+            ViewDetailContactCommand = new DelegateCommand<Contact>(HandleViewDetailContactCommand);
+        }
+
+        private bool CanExecuteAddContactCommand()
         {
             return IsNotBusy;
         }
-        private async void View(Contact obj)
+
+        private async void HandleViewDetailContactCommand(Contact contact)
         {
             IsBusy = true;
-            await NavigationService.NavigateAsync("Detail", new NavigationParameters("Id=" + obj.Id));
+            NavigationParameters parameters = new NavigationParameters();
+            parameters.Add("Contact", contact);
+            await NavigationService.NavigateAsync("Detail", parameters);
             IsBusy = false;
         }
-        private async void Edit(Contact obj)
+
+        private async void HandleEditContactCommand(Contact contact)
         {
             IsBusy = true;
-            await NavigationService.NavigateAsync("Edit", new NavigationParameters("Id=" + obj.Id));
+            NavigationParameters parameters = new NavigationParameters();
+            parameters.Add("Contact", contact);
+            await NavigationService.NavigateAsync("Edit", parameters);
             IsBusy = false;
         }
-        private async void Delete(Contact obj)
+
+        private async void HandleDeleteContactCommand(Contact contact)
         {
             IsBusy = true;
             string message = UI.Alert_Message_Delete;
@@ -84,23 +107,18 @@ namespace DanhBa.ViewModels
             string decline = UI.btnDecline_Delete;
             if (await Application.Current.MainPage.DisplayAlert("", message, accept, decline))
             {
-                _dataService.DeleteElement(obj);
+                ContactBD.Instance.Delete<ContactEntity>(contact.Id);
                 DependencyService.Get<IToastMessage>().LongTime(UI.ToastDelete);
-                Search();
+                ContactItemModels = ContactBD.Instance.Contacts.Select(item => new Contact(item));
             }
-            else
-                IsBusy = false;
+            IsBusy = false;
         }
-        private async void Add()
+
+        private async void HandleAddContactCommand()
         {
             IsBusy = true;
             await NavigationService.NavigateAsync("Edit");
             IsBusy = false;
-        }
-        public override void OnNavigatedTo(INavigationParameters parameters)
-        {
-            base.OnNavigatedTo(parameters);
-            Search();
         }
     }
 }
