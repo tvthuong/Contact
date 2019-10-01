@@ -33,14 +33,13 @@ namespace DanhBa.ViewModels
             get
             {
                 var result = ContactItemModels?.Where(item =>
-                string.IsNullOrEmpty(SearchText?.Trim())
-                || item.FullName.ToLower().Contains(SearchText.ToLower())
-                || item.Phone.Contains(SearchText)).GroupBy(item => item.ShortName);
+                item.IsContainsText(SearchText)).GroupBy(item => item.ShortName);
                 if(result != null)
                     return new ObservableCollection<IGrouping<string, Contact>>(result);
                 return null;
             }
         }
+
         public ICommand AddContactCommand { get; set; }
         public ICommand DeleteContactCommand { get; set; }
         public ICommand EditContactCommand { get; set; }

@@ -27,5 +27,15 @@ namespace DanhBa.Models
         {
             Entity = entity ?? new ContactEntity();
         }
+
+        public bool IsContainsText(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return true;
+            }
+            text = text.Trim();
+            return FullName.ToLower().Contains(text.ToLower()) || Phone.Contains(text);
+        }
     }
 }
